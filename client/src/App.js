@@ -1,25 +1,28 @@
 import React from "react";
-import useSWR from "swr";
 
-const fetcher = (url) => fetch(url).then((res) => res.json());
+import Spacer from "./components/spacer";
+import Padding from "./components/padding";
+import SavedConnection from "./pages/saved-connection";
+import NewConnection from "./pages/new-connection";
 
 const App = () => {
-  const { data, error } = useSWR(
-    `http://localhost:${window.APIPORT}/api/status`,
-    fetcher
+  return (
+    <>
+      <h1 align="center">PUI</h1>
+      <p align="center">
+        <small>Minimal Postgres UI</small>
+      </p>
+      <div className="flex justify-center">
+        <Padding all={2}>
+          <SavedConnection />
+        </Padding>
+        <Spacer x={10} />
+        <Padding all={2}>
+          <NewConnection />
+        </Padding>
+      </div>
+    </>
   );
-
-  if (!data) {
-    return <></>;
-  }
-
-  if(error){
-  return <>Error: {String(error)}</>
-  }
-
-  console.log(data);
-
-  return <h1 align="center">Status: {data.status}</h1>;
 };
 
 export default App;

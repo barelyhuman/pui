@@ -1,53 +1,56 @@
-const { app, BrowserWindow } = require('electron')
-const path = require('path');
-const {spawn} = require('child_process');
-const findFreePorts = require('find-free-ports');
+const { app, BrowserWindow } = require("electron");
+const path = require("path");
+const { spawn } = require("child_process");
+const findFreePorts = require("find-free-ports");
 
+let routerProcess;
 
-let routexProcess;
+function createRouterProcess(port) {
+  const process = spawn("npx", [
+    "ftrouter",
+    "--dir",
+    "/server/routes",
+    "--port",
+    port,
+  ]);
 
-function createRoutexProcess(port){
-  
-    const process = spawn('npx',['ftrouter','--dir', '/server/routes','--port',port]);
+  process.stdout.on("data", (data) => {
+    console.log(Buffer.from(data).toString());
+  });
 
+  process.stderr.on("data", (data) => {
+    console.error(Buffer.from(data).toString());
+  });
 
-        process.stdout.on('data',(data)=>{
-            console.log(Buffer.from(data).toString());
-        })
-
-        process.stderr.on('data',(data)=>{
-            console.error(Buffer.from(data).toString());
-        });
-
-
-    return process;
+  return process;
 }
 
-async function createWindow () {
-  const port = await findFreePorts(1)
-  routexProcess = createRoutexProcess(port);
+async function createWindow() {
+  const port = await findFreePorts(1);
+  routerProcess = createRouterProcess(port);
   const win = new BrowserWindow({
     width: 800,
     height: 600,
+    title: "PUI",
+    titleBarStyle: "hidden",
     webPreferences: {
-      nodeIntegration: true
-    }
-  })
+      nodeIntegration: true,
+    },
+  });
 
-  win.loadFile(path.join('client','dist','index.html'),{query:{
-    port:port
-  }});
+  win.loadFile(path.join("client", "dist", "index.html"), {
+    query: {
+      port: port,
+    },
+  });
 }
 
+app.on("window-all-closed", () => {
+  routerProcess.kill("SIGINT");
 
+  if (process.platform !== "darwin") {
+    app.quit();
+  }
+});
 
-app.on('window-all-closed', () => {
-    routexProcess.kill('SIGINT');
-
-    if (process.platform !== 'darwin') {
-      app.quit()
-    }
-  });
-  
-
-app.whenReady().then(createWindow)
+app.whenReady().then(createWindow);
