@@ -1,8 +1,5 @@
 import React from "react";
-
-import Spacer from "./components/spacer";
 import Padding from "./components/padding";
-import SavedConnection from "./pages/saved-connection";
 import NewConnection from "./pages/new-connection";
 
 const App = () => {

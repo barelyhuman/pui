@@ -1,12 +1,8 @@
+import querystring from "querystring";
 import React from "react";
 import ReactDOM from "react-dom";
-import querystring from "querystring";
-
-import TopBar from "./components/top-bar";
-import Spacer from "./components/spacer";
-
 import App from "./App";
-
+import TopBar from "./components/top-bar";
 import "./index.css";
 
 const Index = () => {
