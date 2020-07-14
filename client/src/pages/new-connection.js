@@ -1,11 +1,30 @@
 import React from "react";
+
 import Padding from "../components/padding";
 import Spacer from "../components/spacer";
 import Input from "../components/input";
 import Button from "../components/button";
+import getPort from "../lib/get-port";
 
 export default (props) => {
-  function handleConnect() {}
+  function handleConnect() {
+    fetch(`http://localhost:${getPort()}/api/connect`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        data: "hello",
+      }),
+    })
+      .then((data) => data.json())
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 
   return (
     <>
@@ -24,7 +43,7 @@ export default (props) => {
           <Spacer y={1} />
           <div className="flex">
             <Spacer fill></Spacer>
-            <Button className="ml-auto" onClick="handleConnect()">
+            <Button className="ml-auto" onClick={handleConnect}>
               Connect
             </Button>
           </div>
