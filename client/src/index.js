@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import querystring from "querystring";
 
 import TopBar from "./components/top-bar";
+import Spacer from "./components/spacer";
 
 import App from "./App";
 
@@ -14,8 +15,9 @@ const Index = () => {
   window.APIPORT = port;
   return (
     <>
-      <TopBar />
-      <App />
+      <TopBar>
+        <App />
+      </TopBar>
     </>
   );
 };

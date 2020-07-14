@@ -8,6 +8,7 @@ export default function Spacer(props) {
       <style jsx>
         {`
           .padding {
+            width: 100%;
             box-sizing: border-box;
             padding-top: ${(props.all || props.top) * spacingMultiplier}px;
             padding-bottom: ${(props.all || props.bottom) *

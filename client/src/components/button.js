@@ -21,12 +21,14 @@ export default ({ children, className, ...props }) => {
             padding-right: 16px;
             font-size: 14px;
             width: auto;
+            outline: var(--black);
             border: 2px solid var(--black);
             border-radius: var(--border-radius-sm);
             transition: 250ms all ease;
           }
 
-          .button:hover {
+          .button:hover,
+          .button:focus {
             background: var(--white);
             color: var(--black);
           }

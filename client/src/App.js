@@ -12,11 +12,7 @@ const App = () => {
       <p align="center">
         <small>Minimal Postgres UI</small>
       </p>
-      <div className="flex justify-center">
-        <Padding all={2}>
-          <SavedConnection />
-        </Padding>
-        <Spacer x={10} />
+      <div className="flex justify-center flex-one">
         <Padding all={2}>
           <NewConnection />
         </Padding>
