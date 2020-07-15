@@ -1,18 +1,48 @@
-import React from "react";
+import React, { useState } from "react";
 import Padding from "../components/padding";
 import Spacer from "../components/spacer";
 import Button from "../components/button";
+import getPort from "../lib/get-port";
 
 export default (props) => {
+  const [query, setQuery] = useState("");
+  const [queryResult, setQueryResult] = useState({});
+
+  const runQuery = () => {
+    fetch(`http://localhost:${getPort()}/api/run/query`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        connectionId: window.sessionStorage.getItem("connectionId"),
+        sqlQuery: query,
+      }),
+    })
+      .then((re) => re.json())
+      .then((data) => {
+        setQueryResult(data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
+
   return (
     <>
       <Padding all={8}>
-        <textarea placeholder="SQL QUERY"></textarea>
+        <textarea
+          placeholder="SQL QUERY"
+          onChange={(e) => setQuery(e.target.value)}
+        ></textarea>
         <Spacer y={1} />
         <div className="flex">
           <div className="flex-one"></div>
-          <Button>Run Query</Button>
+          <Button onClick={runQuery}>Run Query</Button>
           <div className="flex-one"></div>
+        </div>
+        <div className="flex">
+          <pre>{JSON.stringify(queryResult, null, 2)}</pre>
         </div>
       </Padding>
 

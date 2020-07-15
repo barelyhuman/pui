@@ -8,7 +8,9 @@
     "electron": "^9.1.0",
     "find-free-ports": "^2.0.3",
     "ftrouter": "github:barelyhuman/ftrouter",
+    "knex": "^0.21.2",
     "ky": "^0.21.0",
+    "pg": "^8.3.0",
     "quick.db": "^7.1.1",
     "uuid": "^8.2.0"
   },
