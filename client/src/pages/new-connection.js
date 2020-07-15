@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Button from "../components/button";
 import Input from "../components/input";
 import Padding from "../components/padding";
@@ -6,6 +6,12 @@ import Spacer from "../components/spacer";
 import getPort from "../lib/get-port";
 
 export default (props) => {
+  useEffect(() => {
+    if (window.sessionStorage.getItem("connectionId")) {
+      props.router("QUERYPAGE");
+    }
+  }, []);
+
   function handleConnect() {
     fetch(`http://localhost:${getPort()}/api/connect`, {
       method: "POST",
@@ -18,7 +24,8 @@ export default (props) => {
     })
       .then((data) => data.json())
       .then((data) => {
-        console.log(data);
+        window.sessionStorage.setItem("connectionId", data.connectionId);
+        props.router("QUERYPAGE");
       })
       .catch((err) => {
         console.log(err);
