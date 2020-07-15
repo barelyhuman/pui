@@ -3,33 +3,23 @@ import Padding from "../components/padding";
 import Spacer from "../components/spacer";
 import Button from "../components/button";
 import getPort from "../lib/get-port";
+import fit from "@barelyhuman/fit";
 
 export default (props) => {
   const [query, setQuery] = useState("");
   const [queryResult, setQueryResult] = useState({});
 
   const runQuery = () => {
-    fetch(`http://localhost:${getPort()}/api/run/query`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
+    fit(`http://localhost:${getPort()}/api/run/query`)
+      .post({
         connectionId: window.sessionStorage.getItem("connectionId"),
         sqlQuery: query,
-      }),
-    })
-      .then((re) => re.json())
+      })
       .then((data) => {
-        if (data.error) {
-          setQueryResult(data.error);
-        } else {
-          setQueryResult(data.data);
-        }
+        setQueryResult(data.data);
       })
       .catch((err) => {
-        console.log(err);
-        setQueryResult(err.error);
+        setQueryResult(err.error.error);
       });
   };
 
@@ -48,9 +38,7 @@ export default (props) => {
         </div>
         <div className="flex output">
           <div className="flex-one">
-            <p>
-              <pre>{JSON.stringify(queryResult, null, 2)}</pre>
-            </p>
+            <pre>{JSON.stringify(queryResult, null, 2)}</pre>
           </div>
         </div>
       </Padding>

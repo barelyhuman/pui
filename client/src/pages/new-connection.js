@@ -4,6 +4,7 @@ import Input from "../components/input";
 import Padding from "../components/padding";
 import Spacer from "../components/spacer";
 import getPort from "../lib/get-port";
+import fit from "@barelyhuman/fit";
 
 export default (props) => {
   const [username, setUsername] = useState("");
@@ -19,20 +20,14 @@ export default (props) => {
   }, []);
 
   function handleConnect() {
-    fetch(`http://localhost:${getPort()}/api/connect`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
+    fit(`http://localhost:${getPort()}/api/connect`)
+      .post({
         username,
         host,
         password,
         port,
         databaseName: dbName,
-      }),
-    })
-      .then((data) => data.json())
+      })
       .then((data) => {
         window.sessionStorage.setItem("connectionId", data.connectionId);
         props.router("QUERYPAGE");
