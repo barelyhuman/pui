@@ -10,6 +10,8 @@ export default (props) => {
       <style jsx>
         {`
           .top-bar {
+            position: sticky;
+            top: 0;
             width: 100%;
             background: var(--white);
             height: 32px;

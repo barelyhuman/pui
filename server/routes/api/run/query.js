@@ -39,12 +39,13 @@ module.exports = async (req, res) => {
 
     const data = await dbConnection.raw(`${sqlQuery}`);
 
+    dbConnection.destroy();
+
     return res.send({
       data: data.rows,
     });
   } catch (err) {
     res.status(500);
-    res.send({ error: err });
-    throw err;
+    return res.send({ error: String(err) });
   }
 };

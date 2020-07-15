@@ -21,10 +21,15 @@ export default (props) => {
     })
       .then((re) => re.json())
       .then((data) => {
-        setQueryResult(data.data);
+        if (data.error) {
+          setQueryResult(data.error);
+        } else {
+          setQueryResult(data.data);
+        }
       })
       .catch((err) => {
         console.log(err);
+        setQueryResult(err.error);
       });
   };
 
@@ -41,8 +46,12 @@ export default (props) => {
           <Button onClick={runQuery}>Run Query</Button>
           <div className="flex-one"></div>
         </div>
-        <div className="flex">
-          <pre>{JSON.stringify(queryResult, null, 2)}</pre>
+        <div className="flex output">
+          <div className="flex-one">
+            <p>
+              <pre>{JSON.stringify(queryResult, null, 2)}</pre>
+            </p>
+          </div>
         </div>
       </Padding>
 
@@ -61,6 +70,15 @@ export default (props) => {
 
           textarea:focus {
             border-color: var(--black);
+          }
+
+          pre {
+            overflow-x: auto;
+            white-space: pre-wrap;
+            white-space: -moz-pre-wrap;
+            white-space: -pre-wrap;
+            white-space: -o-pre-wrap;
+            word-wrap: break-word;
           }
         `}
       </style>
